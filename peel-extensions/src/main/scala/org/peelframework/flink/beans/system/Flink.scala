@@ -21,7 +21,7 @@ import com.samskivert.mustache.Mustache
 import org.peelframework.core.beans.system.Lifespan.Lifespan
 import org.peelframework.core.beans.system.{DistributedLogCollection, SetUpTimeoutException, System}
 import org.peelframework.core.config.{Model, SystemConfig}
-import org.peelframework.core.util.shell
+import org.peelframework.core.util.{Version, shell}
 
 import scala.collection.JavaConverters._
 import scala.collection.Seq
@@ -62,6 +62,8 @@ class Flink(
   override protected def logFilePatterns(): Seq[Regex] = {
     val user = Pattern.quote(config.getString(s"system.$configKey.user"))
     hosts.map(Pattern.quote).flatMap(host => Seq(
+      s"flink-$user-standalonesession-\\d+-$host\\.log".r,
+      s"flink-$user-standalonesession-\\d+-$host\\.out".r,
       s"flink-$user-jobmanager-\\d+-$host\\.log".r,
       s"flink-$user-jobmanager-\\d+-$host\\.out".r,
       s"flink-$user-taskmanager-\\d+-$host\\.log".r,
@@ -118,10 +120,13 @@ class Flink(
           // wait a bit
           Thread.sleep(config.getInt(s"system.$configKey.startup.polling.interval"))
           // get new values
-          if (version.startsWith("0.6"))
+          if (Version(version) < Version("0.6")) {
             curr = Integer.parseInt((shell !! s"""cat $logDir/flink-$user-jobmanager-*.log | grep 'Creating instance' | wc -l""").trim())
-          else
+          } else if (Version(version) < Version("1.6")) {
             curr = Integer.parseInt((shell !! s"""cat $logDir/flink-$user-jobmanager-*.log | grep 'Registered TaskManager' | wc -l""").trim())
+          } else {
+            curr = Integer.parseInt((shell !! s"""cat $logDir/flink-$user-standalonesession-*.log | grep 'Registering TaskManager' | wc -l""").trim())
+          }
           // timeout if counter goes below zero
           cntr = cntr - 1
           if (cntr < 0) throw new SetUpTimeoutException(s"Cannot start system '$toString'; node connection timeout at system ")
