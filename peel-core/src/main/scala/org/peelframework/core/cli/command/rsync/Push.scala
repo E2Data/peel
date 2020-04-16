@@ -109,8 +109,8 @@ class Push extends Command {
       FolderEntry(
         src = Paths.get(config.getString("app.path.utils")),
         dst = Paths.get(dst, bun, "utils"),
-        inc = Seq.empty[String],
-        exc = Seq("*"))
+        inc = Seq("*"),
+        exc = Seq.empty[String])
     )
 
     for (entry <- dirs) {
