@@ -66,11 +66,11 @@ class Yarn3(
       SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.workers", s"$conf/workers", templatePath("conf/hosts"), mc),
       SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.workers", s"$conf/yarn-workers", templatePath("conf/hosts"), mc),
       SystemConfig.Entry[Model.Env](s"system.$configKey.config.env", s"$conf/hadoop-env.sh", templatePath("conf/hadoop-env.sh"), mc),
-      SystemConfig.Entry[Model.Site](s"system.$configKey.config.core", s"$conf/core-site.xml", templatePath("conf/site.xml"), mc),
-      SystemConfig.Entry[Model.Site](s"system.$configKey.config.yarn", s"$conf/yarn-site.xml", templatePath("conf/site.xml"), mc),
-      SystemConfig.Entry[Model.Site](s"system.$configKey.config.mapred", s"$conf/mapred-site.xml", templatePath("conf/site.xml"), mc),
-      SystemConfig.Entry[Model.Site](s"system.$configKey.config.resource-types", s"$conf/resource-types.xml", templatePath("conf/site.xml"), mc),
-      SystemConfig.Entry[Model.KeyValue](s"system.$configKey.config.capacity-scheduler", s"$conf/capacity-scheduler.xml", templatePath("conf/capacity-scheduler.xml"), mc),
+      SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.core", s"$conf/core-site.xml", templatePath("conf/site.xml"), mc),
+      SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.yarn", s"$conf/yarn-site.xml", templatePath("conf/site.xml"), mc),
+      SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.mapred", s"$conf/mapred-site.xml", templatePath("conf/site.xml"), mc),
+      SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.resource-types", s"$conf/resource-types.xml", templatePath("conf/site.xml"), mc),
+      SystemConfig.Entry[Model.NamedKeyValuePairs](s"system.$configKey.config.capacity-scheduler", s"$conf/capacity-scheduler.xml", templatePath("conf/capacity-scheduler.xml"), mc),
       SystemConfig.Entry[Model.INI](s"system.$configKey.config.container-executor", s"$conf/container-executor.cfg", templatePath("conf/ini"), mc)
     )
   })

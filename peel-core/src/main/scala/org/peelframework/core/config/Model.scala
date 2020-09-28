@@ -53,7 +53,7 @@ object Model {
     * @param c The HOCON config to use when constructing the model.
     * @param prefix The prefix path which has to be rendered.
     */
-  class Site(val c: Config, val prefix: String) extends Model {
+  class GenericKeyValuePairs(val c: Config, val prefix: String) extends Model {
 
     val properties = {
 
@@ -167,7 +167,7 @@ object Model {
     * @param c The HOCON config to use when constructing the model.
     * @param prefix The prefix path which has to be rendered.
     */
-  class KeyValue(val c: Config, val prefix: String) extends util.HashMap[String, Object] with Model {
+  class NamedKeyValuePairs(val c: Config, val prefix: String) extends util.HashMap[String, Object] with Model {
 
     // constructor
     {
@@ -187,11 +187,6 @@ object Model {
       Unit
     }
   }
-
-  /** Alias for Model.KeyValue.
-   *
-   */
-  class Yaml(override val c: Config, override val prefix: String) extends KeyValue(c, prefix) { }
 
   /** A model for list based hosts files (e.g. etc/hadoop/slaves).
     *
