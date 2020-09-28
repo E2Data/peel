@@ -16,7 +16,16 @@
 # limitations under the License.
 ################################################################################
 
+# This affects logging for both user code and Flink
 log4j.rootLogger=INFO, file
+
+# The following lines keep the log level of common libraries/connectors on
+# log level INFO. The root logger does not override this. You have to manually
+# change the log levels here.
+log4j.logger.akka=INFO
+log4j.logger.org.apache.kafka=INFO
+log4j.logger.org.apache.hadoop=INFO
+log4j.logger.org.apache.zookeeper=INFO
 
 # Log all infos in the given file
 {{#log4j.appender.file._root_}}log4j.appender.file={{log4j.appender.file._root_}}{{/log4j.appender.file._root_}}{{^log4j.appender.file._root_}}log4j.appender.file=org.apache.log4j.FileAppender{{/log4j.appender.file._root_}}
