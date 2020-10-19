@@ -100,7 +100,8 @@ class FlinkYarnSession(
       try {
         var done = false
 
-        shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/yarn-session.sh -n ${hosts.size} -s $numberOfTaskSlots -d"
+        logger.info(s"Starting detached Flink YARN session.")
+        shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/yarn-session.sh -d"
 
         var cntr = config.getInt(s"system.$configKey.startup.polling.counter")
         while (!done) {
