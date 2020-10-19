@@ -319,6 +319,30 @@ class extensions extends ApplicationContextAware {
     mc           = ctx.getBean(classOf[Mustache.Compiler])
   )
 
+  @Bean(name = Array("flink-1.11.0"))
+  def `flink-1.11.0`: Flink = new FlinkStandaloneCluster(
+    version      = "1.11.0",
+    configKey    = "flink",
+    lifespan     = Lifespan.EXPERIMENT,
+    mc           = ctx.getBean(classOf[Mustache.Compiler])
+  )
+
+  @Bean(name = Array("flink-1.11.1"))
+  def `flink-1.11.1`: Flink = new FlinkStandaloneCluster(
+    version      = "1.11.1",
+    configKey    = "flink",
+    lifespan     = Lifespan.EXPERIMENT,
+    mc           = ctx.getBean(classOf[Mustache.Compiler])
+  )
+
+  @Bean(name = Array("flink-1.11.2"))
+  def `flink-1.11.2`: Flink = new FlinkStandaloneCluster(
+    version      = "1.11.2",
+    configKey    = "flink",
+    lifespan     = Lifespan.EXPERIMENT,
+    mc           = ctx.getBean(classOf[Mustache.Compiler])
+  )
+
   // Flink YARN session
 
   @Bean(name = Array("flink-yarn-1.7.0"))
@@ -332,6 +356,30 @@ class extensions extends ApplicationContextAware {
   @Bean(name = Array("flink-yarn-1.7.2"))
   def `flink-yarn-1.7.2`: Flink = new FlinkYarnSession(
     version      = "1.7.2",
+    configKey    = "flink",
+    lifespan     = Lifespan.EXPERIMENT,
+    mc           = ctx.getBean(classOf[Mustache.Compiler])
+  )
+
+  @Bean(name = Array("flink-yarn-1.11.0"))
+  def `flink-yarn-1.11.0`: Flink = new FlinkYarnSession(
+    version      = "1.11.0",
+    configKey    = "flink",
+    lifespan     = Lifespan.EXPERIMENT,
+    mc           = ctx.getBean(classOf[Mustache.Compiler])
+  )
+
+  @Bean(name = Array("flink-yarn-1.11.1"))
+  def `flink-yarn-1.11.1`: Flink = new FlinkYarnSession(
+    version      = "1.11.1",
+    configKey    = "flink",
+    lifespan     = Lifespan.EXPERIMENT,
+    mc           = ctx.getBean(classOf[Mustache.Compiler])
+  )
+
+  @Bean(name = Array("flink-yarn-1.11.2"))
+  def `flink-yarn-1.11.2`: Flink = new FlinkYarnSession(
+    version      = "1.11.2",
     configKey    = "flink",
     lifespan     = Lifespan.EXPERIMENT,
     mc           = ctx.getBean(classOf[Mustache.Compiler])

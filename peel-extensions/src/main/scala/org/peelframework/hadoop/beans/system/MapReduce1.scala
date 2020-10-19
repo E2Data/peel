@@ -44,8 +44,8 @@ class MapReduce1(
       SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.masters", s"$conf/masters", templatePath("conf/hosts"), mc),
       SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.slaves", s"$conf/slaves", templatePath("conf/hosts"), mc),
       SystemConfig.Entry[Model.Env](s"system.$configKey.config.env", s"$conf/hadoop-env.sh", templatePath("conf/hadoop-env.sh"), mc),
-      SystemConfig.Entry[Model.Site](s"system.$configKey.config.core", s"$conf/core-site.xml", templatePath("conf/site.xml"), mc),
-      SystemConfig.Entry[Model.Site](s"system.$configKey.config.mapred", s"$conf/mapred-site.xml", templatePath("conf/site.xml"), mc)
+      SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.core", s"$conf/core-site.xml", templatePath("conf/site.xml"), mc),
+      SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.mapred", s"$conf/mapred-site.xml", templatePath("conf/site.xml"), mc)
     )
   })
 

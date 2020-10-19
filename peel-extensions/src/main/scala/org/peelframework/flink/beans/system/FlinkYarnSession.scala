@@ -69,8 +69,8 @@ class FlinkYarnSession(
     val conf = config.getString(s"system.$configKey.path.config")
     List(
       SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.slaves", s"$conf/slaves", templatePath("conf/hosts"), mc),
-      SystemConfig.Entry[Model.Yaml](s"system.$configKey.config.yaml", s"$conf/flink-conf.yaml", templatePath("conf/flink-conf.yaml"), mc),
-      SystemConfig.Entry[Model.Yaml](s"system.$configKey.config.log4j", s"$conf/log4j-yarn-session.properties", templatePath("conf/log4j-yarn-session.properties"), mc)
+      SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.yaml", s"$conf/flink-conf.yaml", templatePath("conf/flink-conf.yaml"), mc),
+      SystemConfig.Entry[Model.NamedKeyValuePairs](s"system.$configKey.config.log4j", s"$conf/log4j-session.properties", templatePath("conf/log4j-session.properties"), mc)
     )
   })
 
@@ -100,7 +100,8 @@ class FlinkYarnSession(
       try {
         var done = false
 
-        shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/yarn-session.sh -n ${hosts.size} -s $numberOfTaskSlots -d"
+        logger.info(s"Starting detached Flink YARN session.")
+        shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/yarn-session.sh -d"
 
         var cntr = config.getInt(s"system.$configKey.startup.polling.counter")
         while (!done) {

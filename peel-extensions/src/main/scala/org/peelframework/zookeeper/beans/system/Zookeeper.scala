@@ -39,7 +39,7 @@ class Zookeeper(
   mc           : Mustache.Compiler) extends System("zookeeper", version, configKey, lifespan, dependencies, mc) {
 
   override def configuration() = SystemConfig(config, List(
-    SystemConfig.Entry[Model.Site](s"system.$configKey.config", s"${c.conf}/zoo.cfg", templatePath("conf/zoo.cfg"), mc)
+    SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config", s"${c.conf}/zoo.cfg", templatePath("conf/zoo.cfg"), mc)
   ))
 
   override def start(): Unit = if (!isUp) {
