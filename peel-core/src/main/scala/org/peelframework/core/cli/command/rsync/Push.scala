@@ -110,6 +110,11 @@ class Push extends Command {
         src = Paths.get(config.getString("app.path.utils")),
         dst = Paths.get(dst, bun, "utils"),
         inc = Seq("*"),
+        exc = Seq.empty[String]),
+      FolderEntry(
+        src = Paths.get(config.getString("app.path.templates")),
+        dst = Paths.get(dst, bun, "templates"),
+        inc = Seq("*"),
         exc = Seq.empty[String])
     )
 
