@@ -138,11 +138,11 @@ class DependencyGraph[T: ClassTag] {
    * @return List of a possible depth first search sequence
    */
   def traverse(start: Set[T] = vertices diff edgeTargets): List[T] = {
-
-    if (start != (vertices diff edgeTargets))
-      collect(start ++ (vertices diff edgeTargets), List()).reverse
-    else
-      collect(start, List()).reverse
+    if (start != (vertices diff edgeTargets)) {
+      collect((start ++ (vertices diff edgeTargets)).toList, List()).reverse
+    } else {
+      collect(start.toList, List()).reverse
+    }
   }
 
   /** Depth-first list of all node descendants.
@@ -151,7 +151,7 @@ class DependencyGraph[T: ClassTag] {
    * @param excluded a set of nodes to be excluded from the traversal.
    * @return sequence of dependencies of that node
    */
-  def descendants(start: T, excluded: Set[_ <: T] = Set.empty[T]): List[T] = collect(Set(start), List(), excluded).reverse
+  def descendants(start: T, excluded: Set[_ <: T] = Set.empty[T]): List[T] = collect(List(start), List(), excluded).reverse
 
   /** Reverses the graph.
     *
@@ -181,17 +181,20 @@ class DependencyGraph[T: ClassTag] {
    * @tparam U The type of the excluded set elements.
    */
   @tailrec
-  private def collect[U <: T: ClassTag](toVisit: Set[T], visited: List[T], excluded: Set[U] = Set.empty[T]): List[T] = {
+  private def collect[U <: T: ClassTag](toVisit: List[T], visited: List[T], excluded: Set[U] = Set.empty[T]): List[T] = {
     val clazz = classTag[T].runtimeClass
     if (toVisit.isEmpty) visited
     else {
       val next: T = toVisit.head
-      val children: Set[T] = graph(next) filter {
-        case x if clazz.isInstance(x) => !visited.contains(x) && !excluded.contains(x.asInstanceOf[U])
-        case x: Any => !visited.contains(x)
+      if (visited.contains(next)) {
+        collect(toVisit.tail, visited, excluded)
+      } else {
+        val children: Set[T] = graph(next) filter {
+          case x if clazz.isInstance(x) => !visited.contains(x) && !excluded.contains(x.asInstanceOf[U])
+          case x: Any => !visited.contains(x)
+        }
+        collect(toVisit.tail ++ children, next :: visited, excluded)
       }
-
-      collect(toVisit.tail ++ children, next :: visited, excluded)
     }
   }
 
