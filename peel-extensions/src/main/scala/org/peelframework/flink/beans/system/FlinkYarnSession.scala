@@ -84,7 +84,7 @@ class FlinkYarnSession(
     }
 
     val hosts = config.getStringList(s"system.$configKey.config.slaves").asScala
-    val paths = config.getString(s"system.$configKey.config.yaml.taskmanager.tmp.dirs").split(':')
+    val paths = config.getString(s"system.$configKey.tmp.dirs").split(':')
 
     val futureInitOps = Future.traverse(hosts)(host => Future {
       logger.info(s"Initializing Flink tmp directories '${paths.mkString(":")}' at $host")
