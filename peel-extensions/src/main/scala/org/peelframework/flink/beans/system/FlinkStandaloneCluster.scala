@@ -76,7 +76,7 @@ class FlinkStandaloneCluster(
   override def configuration() = SystemConfig(config, {
     val conf = config.getString(s"system.$configKey.path.config")
     List(
-      SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.slaves", s"$conf/slaves", templatePath("conf/hosts"), mc),
+      SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.slaves", s"$conf/workers", templatePath("conf/hosts"), mc),
       SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.yaml", s"$conf/flink-conf.yaml", templatePath("conf/flink-conf.yaml"), mc),
       SystemConfig.Entry[Model.NamedKeyValuePairs](s"system.$configKey.config.log4j", s"$conf/log4j.properties", templatePath("conf/log4j.properties"), mc)
     )
