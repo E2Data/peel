@@ -109,7 +109,9 @@ class FlinkStandaloneCluster(
         val init = 0 // Flink resets the job manager log on startup
 
         shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/start-cluster.sh"
-        shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/start-webclient.sh"
+        if (Version(version) < Version("1.0")) {
+          shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/start-webclient.sh"
+        }
         logger.info(s"Waiting for nodes to connect")
 
         var curr = init
@@ -136,7 +138,9 @@ class FlinkStandaloneCluster(
           failedStartUpAttempts = failedStartUpAttempts + 1
           if (failedStartUpAttempts < config.getInt(s"system.$configKey.startup.max.attempts")) {
             shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/stop-cluster.sh"
-            shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/stop-webclient.sh"
+            if (Version(version) < Version("1.0")) {
+              shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/stop-webclient.sh"
+            }
             logger.info(s"Could not bring system '$toString' up in time, trying again...")
           } else {
             throw e
