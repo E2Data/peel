@@ -76,7 +76,7 @@ class FlinkStandaloneCluster(
   override def configuration() = SystemConfig(config, {
     val conf = config.getString(s"system.$configKey.path.config")
     List(
-      SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.slaves", s"$conf/slaves", templatePath("conf/hosts"), mc),
+      SystemConfig.Entry[Model.Hosts](s"system.$configKey.config.slaves", s"$conf/workers", templatePath("conf/hosts"), mc),
       SystemConfig.Entry[Model.GenericKeyValuePairs](s"system.$configKey.config.yaml", s"$conf/flink-conf.yaml", templatePath("conf/flink-conf.yaml"), mc),
       SystemConfig.Entry[Model.NamedKeyValuePairs](s"system.$configKey.config.log4j", s"$conf/log4j.properties", templatePath("conf/log4j.properties"), mc)
     )
@@ -109,7 +109,9 @@ class FlinkStandaloneCluster(
         val init = 0 // Flink resets the job manager log on startup
 
         shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/start-cluster.sh"
-        shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/start-webclient.sh"
+        if (Version(version) < Version("1.0")) {
+          shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/start-webclient.sh"
+        }
         logger.info(s"Waiting for nodes to connect")
 
         var curr = init
@@ -136,7 +138,9 @@ class FlinkStandaloneCluster(
           failedStartUpAttempts = failedStartUpAttempts + 1
           if (failedStartUpAttempts < config.getInt(s"system.$configKey.startup.max.attempts")) {
             shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/stop-cluster.sh"
-            shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/stop-webclient.sh"
+            if (Version(version) < Version("1.0")) {
+              shell ! s"${config.getString(s"system.$configKey.path.home")}/bin/stop-webclient.sh"
+            }
             logger.info(s"Could not bring system '$toString' up in time, trying again...")
           } else {
             throw e
